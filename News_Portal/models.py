@@ -8,7 +8,7 @@ class Author(models.Model):
 
     def update_rating(self):
         rating = 0.0
-        for post in self.post_set.objects.all():
+        for post in self.post_set.all():
             rating += post.rating * 3
             for comment in post.comment_set.all():
                 rating += comment.rating
