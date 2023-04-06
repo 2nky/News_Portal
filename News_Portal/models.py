@@ -23,6 +23,9 @@ class Author(models.Model):
 class Category(models.Model):
     category_name = models.CharField(max_length=30, default="", unique=True)
 
+    def __str__(self):
+        return f"'{self.category_name}'"
+
 
 TYPES = [
     ("NW", "news"),
@@ -52,8 +55,8 @@ class Post(models.Model):
         text = text + "..."
         return text
 
-    def __repr__(self):
-        return f"Пост: '{self.title}' (PK: {self.pk})"
+    def __str__(self):
+        return f"Пост: '{self.title}'"
 
 
 class PostCategory(models.Model):
