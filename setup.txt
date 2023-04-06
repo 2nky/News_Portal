@@ -1,0 +1,57 @@
+# python manage.py shell
+>>> from django.contrib.auth.models import User
+>>> user1 = User.objects.create_user('Mariia')
+>>> user2 = User.objects.create_user('Alex')
+>>> from News_Portal.models import Author, Category, Post, Comment
+>>> author1 = Author.objects.create(user=user1)
+>>> author2 = Author.objects.create(user=user2)
+>>> cat1 = Category.objects.create(category_name='Политика')
+>>> cat2 = Category.objects.create(category_name='Здоровье')
+>>> cat3 = Category.objects.create(category_name='Светская Хроника')
+>>> cat4 = Category.objects.create(category_name='Дети')
+>>> post1 = Post.objects.create(author=author1, type='AT', title='Сдохни или умри', text='Подход к охране здоровья на основе соблюдения прав человека требует, чтобы политика и программы здравоохранения уделяли приоритетное внимание потребностям тех, кто находится в конце пути к обеспечению большей справедливости, ― этот принцип отражен в недавно принятой Повестке дня в области устойчивого развития на период до 2030 г. и в концепции всеобщего охвата медицинскими услугами.')
+>>> post1.category.add(cat1)
+>>> post1.category.add(cat2)
+>>> post2 = Post.objects.create(author=author1, type='AT', title='Кто вышел замуж, а кто нет', text='У этих знаменитостей было много бурных романов. И некоторые из них едва не закончились свадьбой, но впервые пойти под венец они решились только после 40 лет. Сегодня стало известно, что Квентин Тарантино женился. До этого режиссер утверждал, что семья и кино несовместимы.А мы вспомнили других звёзд, которые доказали, что большую любовь можно и подожать. Сальма Хайек вышла замуж за бизнесмена Франсуа-Анри Пино дважды.')
+>>> post2.category.add(cat2)
+>>> post3 = Post.objects.create(author=author2, type='NW', title='Оскар', text='Смотрите Оскар вместе с нами')
+>>> post3.category.add(cat2)
+>>> comment1 = Comment.objects.create(post=post1, user=user1, text='LOL')
+>>> comment2 = Comment.objects.create(post=post2, user=user1, text='Buu')
+>>> comment3 = Comment.objects.create(post=post3, user=user2, text='Класс')
+>>> comment4 = Comment.objects.create(post=post1, user=user2, text='OK')
+>>> post1.like()
+>>> post1.like()
+>>> post1.like()
+>>> post1.dislike()
+>>> post2.dislike()
+>>> post2.dislike()
+>>> post2.dislike()
+>>> post2.dislike()
+>>> post2.dislike()
+>>> post3.like()
+>>> comment1.like()
+>>> comment2.like()
+>>> comment2.like()
+>>> comment2.like()
+>>> comment2.like()
+>>> comment3.like()
+>>> comment3.like()
+>>> comment4.like()
+>>> comment4.like()
+>>> comment1.dislike()
+>>> author1.rating = 5.0
+>>> author2.update_rating()
+>>> author1.update_rating()
+>>> best = Author.objects.all().order_by('-rating').first()
+>>> print(best.user.username, best.rating)
+>>> best_news = Post.objects.post().order_by('-rating').first()
+>>> print(best_news.creation_time, best_news.author.user.username, best_news.rating, best_news.title, best_news.preview())
+>>> Comment.objects.all().filter(post__pk=post1.pk).values('creation_time','rating', 'user__username', 'text')
+
+
+
+
+
+
+

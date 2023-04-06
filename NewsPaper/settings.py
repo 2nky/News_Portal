@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "mc_donalds",
     "News_Portal",
     "simpleapp",
-    "news_portal2",
 ]
 
 MIDDLEWARE = [

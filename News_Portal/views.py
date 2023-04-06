@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 
-from NewsPaper.News_Portal.models import Post
+from .models import Post
 
 #
 #
