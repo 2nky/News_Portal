@@ -52,6 +52,9 @@ class Post(models.Model):
         text = text + "..."
         return text
 
+    def __repr__(self):
+        return f"Пост: '{self.title}' (PK: {self.pk})"
+
 
 class PostCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
