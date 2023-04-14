@@ -17,6 +17,9 @@ BANNED_WORDS = [
 
 @register.filter()
 def censor(text):
+    if not isinstance(text, str):
+        raise ValueError("мы только тексты цензурируем в нашей редакции")
+
     for bad_word in BANNED_WORDS:
         if bad_word in text:
             censored = bad_word[0] + ("*" * (len(bad_word) - 1))

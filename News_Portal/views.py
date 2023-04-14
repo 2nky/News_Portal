@@ -41,6 +41,7 @@ class NewsList(ListView):
     ordering = "-creation_time"
     template_name = "news.html"
     context_object_name = "news"
+    paginate_by = 10
 
     # Метод get_context_data позволяет нам изменить набор данных,
     # который будет передан в шаблон.
