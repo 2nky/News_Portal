@@ -1,5 +1,5 @@
 """
-ASGI config for NewsPaper project.
+ASGI config for NewsPaper protect.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

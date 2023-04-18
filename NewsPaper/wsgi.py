@@ -1,5 +1,5 @@
 """
-WSGI config for NewsPaper project.
+WSGI config for NewsPaper protect.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
