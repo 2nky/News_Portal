@@ -21,12 +21,15 @@ class Author(models.Model):
         self.rating = rating
         self.save()
 
+    def __str__(self):
+        return self.user.username
+
 
 class Category(models.Model):
     category_name = models.CharField(max_length=30, default="", unique=True)
 
     def __str__(self):
-        return f"'{self.category_name}'"
+        return f"{self.category_name}"
 
 
 TYPES = [

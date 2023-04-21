@@ -67,19 +67,47 @@ class Search(ListView):
         return context
 
 
-class PostCreate(CreateView):
+class NWCreate(CreateView):
+    form_class = PostForm
+    model = Post
+    template_name = "post_edit.html"
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.type = "NW"
+        return super().form_valid(form)
+
+
+class NWUpdate(UpdateView):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
 
 
-class PostUpdate(UpdateView):
+class NWDelete(DeleteView):
+    model = Post
+    template_name = "post_delete.html"
+    success_url = reverse_lazy("news_list")
+
+
+class ATCreate(CreateView):
+    form_class = PostForm
+    model = Post
+    template_name = "post_edit.html"
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.type = "AT"
+        return super().form_valid(form)
+
+
+class ATUpdate(UpdateView):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
 
 
-class PostDelete(DeleteView):
+class ATDelete(DeleteView):
     model = Post
     template_name = "post_delete.html"
     success_url = reverse_lazy("news_list")
