@@ -7,9 +7,8 @@ News
 {% endblock title %}
 
 {% block content %}
-   <h1>Все новости</h1>
+   <h1>Поиск информации</h1>
 
-    {# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
    <form action="" method="get">
        {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
        {{ filterset.form.as_p }}
@@ -24,12 +23,14 @@ News
                <td>Заголовок</td>
                <td>Дата</td>
                <td>Превью</td>
+               <td>Автор</td>
            </tr>
            {% for post in news %}
            <tr>
                <td>{{ post.title|censor }}</td>
                <td>{{ post.creation_time }}</td>
                <td>{{ post.text|truncatechars:20|censor }}</td>
+               <td>{{ post.author|truncatechars:20|censor }}</td>
            </tr>
            {% endfor %}
 
