@@ -1,6 +1,14 @@
+from django.urls import reverse_lazy
+
 from .filters import PostFilter
 from datetime import datetime
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 from .forms import PostForm
 from .models import Post
 
@@ -69,3 +77,9 @@ class PostUpdate(UpdateView):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
+
+
+class PostDelete(DeleteView):
+    model = Post
+    template_name = "post_delete.html"
+    success_url = reverse_lazy("news_list")
