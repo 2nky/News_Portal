@@ -11,9 +11,10 @@ from django.views.generic import (
 )
 from .forms import PostForm
 from .models import Post
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class NewsList(ListView):
+class NewsList(ListView, LoginRequiredMixin):
     model = Post
     ordering = "-creation_time"
     template_name = "news.html"
@@ -67,7 +68,7 @@ class Search(ListView):
         return context
 
 
-class NWCreate(CreateView):
+class NWCreate(CreateView, LoginRequiredMixin):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
@@ -78,19 +79,19 @@ class NWCreate(CreateView):
         return super().form_valid(form)
 
 
-class NWUpdate(UpdateView):
+class NWUpdate(UpdateView, LoginRequiredMixin):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
 
 
-class NWDelete(DeleteView):
+class NWDelete(DeleteView, LoginRequiredMixin):
     model = Post
     template_name = "post_delete.html"
     success_url = reverse_lazy("news_list")
 
 
-class ATCreate(CreateView):
+class ATCreate(CreateView, LoginRequiredMixin):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
@@ -101,13 +102,13 @@ class ATCreate(CreateView):
         return super().form_valid(form)
 
 
-class ATUpdate(UpdateView):
+class ATUpdate(UpdateView, LoginRequiredMixin):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
 
 
-class ATDelete(DeleteView):
+class ATDelete(DeleteView, LoginRequiredMixin):
     model = Post
     template_name = "post_delete.html"
     success_url = reverse_lazy("news_list")

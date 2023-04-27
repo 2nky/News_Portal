@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Страница пользователя</title>
+  </head>
+  <body>
+    <h1>My Profile</h1>
+    <h2>Обо мне</h2>
+    <h2>Контакты</h2>
+    <ul>
+      <li>Email: {{ request.user.email }}</li>
+    </ul>
+  </body>
+  <input type="submit" value="Сохранить">
+  <a href="/sign/logout">Выйти из системы</a>
+</html>
+

@@ -15,12 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
+
+from sign.views import user_profile
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("pages/", include("django.contrib.flatpages.urls")),
-    # Делаем так, чтобы все адреса из нашего приложения (simpleapp/urls.py)
-    # подключались к главному приложению с префиксом products/.
     path("news/", include("News_Portal.urls")),
     path("articles/", include("News_Portal.urls_articles")),
+    path("sign/", include("sign.urls")),
+    path("accounts/", include("allauth.urls")),
+    path("profile/", user_profile, name="user_profile"),
+    path("", RedirectView.as_view(url="/news")),
 ]

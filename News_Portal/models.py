@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.core.validators import MinValueValidator
 from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 
 
 class Author(models.Model):
@@ -89,3 +90,7 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+
+class ProtectedView(LoginRequiredMixin, TemplateView):
+    template_name = "protected_page.html"
