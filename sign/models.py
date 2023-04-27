@@ -21,10 +21,10 @@ class BaseRegisterForm(UserCreationForm):
             "password2",
         )
 
-class BasicSignupForm(SignupForm):
 
+class BasicSignupForm(SignupForm):
     def save(self, request):
         user = super(BasicSignupForm, self).save(request)
-        basic_group = Group.objects.get(name='basic')
-        basic_group.user_set.add(user)
+        common_group = Group.objects.get(name="common")
+        common_group.user_set.add(user)
         return user

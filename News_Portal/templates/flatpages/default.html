@@ -33,7 +33,7 @@
                        </li>
                        <li class="nav-item active">
                            {% if request.user.is_anonymous %}
-                                <a class="nav-link" href="/sign/login">Log in</a>
+                                <a class="nav-link" href="/accounts/login">Log in</a>
                            {% else %}
                                 <a class="nav-link" href="/sign/logout">Log out</a>
                            {% endif %}
