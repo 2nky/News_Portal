@@ -1,19 +1,13 @@
+{% extends 'flatpages/default.html' %}
+
 {% load custom_filters %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Страница пользователя</title>
-  </head>
-  <body>
-    <h1>My Profile</h1>
-    <h2> {% if request.user|has_group:"authors" %} Автор! {% else %} Пользователь {% endif %}</h2>
+{% block content %}
+    <h1>Профиль</h1>
+    <h2> Статус: {% if request.user|has_group:"authors" %} Автор! {% else %} Пользователь {% endif %}</h2>
     <h2>Контакты</h2>
     <ul>
       <li>Email: {{ request.user.email }}</li>
     </ul>
-  </body>
-  <input type="submit" value="Сохранить">
   <button> <a href="/sign/upgrade/"> Хочу стать автором!</a> </button>
   <a href="/sign/logout">Выйти из системы</a>
-</html>
-
+{% endblock content %}
