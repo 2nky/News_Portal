@@ -11,7 +11,7 @@ from django.views.generic import (
 )
 from .forms import PostForm
 from .models import Post
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 class NewsList(ListView, LoginRequiredMixin):
@@ -67,10 +67,11 @@ class Search(ListView):
         return context
 
 
-class NWCreate(CreateView, LoginRequiredMixin):
+class NWCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
+    permission_required = "News_Portal.add_post"
 
     def form_valid(self, form):
         post = form.save(commit=False)
@@ -78,22 +79,25 @@ class NWCreate(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class NWUpdate(UpdateView, LoginRequiredMixin):
+class NWUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
+    permission_required = "News_Portal.change_post"
 
 
-class NWDelete(DeleteView, LoginRequiredMixin):
+class NWDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = "post_delete.html"
     success_url = reverse_lazy("news_list")
+    permission_required = "News_Portal.delete_post"
 
 
-class ATCreate(CreateView, LoginRequiredMixin):
+class ATCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
+    permission_required = "News_Portal.add_post"
 
     def form_valid(self, form):
         post = form.save(commit=False)
@@ -101,13 +105,15 @@ class ATCreate(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class ATUpdate(UpdateView, LoginRequiredMixin):
+class ATUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
+    permission_required = "News_Portal.change_post"
 
 
-class ATDelete(DeleteView, LoginRequiredMixin):
+class ATDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = "post_delete.html"
     success_url = reverse_lazy("news_list")
+    permission_required = "News_Portal.delete_post"
