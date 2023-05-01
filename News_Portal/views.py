@@ -1,4 +1,7 @@
+from django.core.mail import send_mail
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import View
 
 from .filters import PostFilter
 from datetime import datetime
@@ -10,7 +13,7 @@ from django.views.generic import (
     DeleteView,
 )
 from .forms import PostForm
-from .models import Post
+from .models import Post, Subscribers
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
@@ -117,3 +120,26 @@ class ATDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     template_name = "post_delete.html"
     success_url = reverse_lazy("news_list")
     permission_required = "News_Portal.delete_post"
+
+
+def save():
+    pass
+
+
+class AddSubscriber(View):
+    def get(self, request, **kwargs):
+        return render(request, "mailing.html", {})
+
+    def post(self, request, *args, **kwargs):
+        mailing = Subscribers(
+            user=request.user,
+        )
+        mailing.save()
+
+        send_mail(
+            subject="Вы успешно подписались на рассылку!",
+            message="Спасибо",
+            from_email="fonarevap@yandex.ru",
+            recipient_list=[request.user.email],
+        )
+        return redirect("profile")

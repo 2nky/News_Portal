@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+from datetime import datetime
 
 
 class Author(models.Model):
@@ -92,5 +91,8 @@ class Comment(models.Model):
         self.save()
 
 
-class ProtectedView(LoginRequiredMixin, TemplateView):
-    template_name = "protected_page.html"
+class Subscribers(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user}"
