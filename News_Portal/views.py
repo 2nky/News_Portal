@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -12,8 +13,8 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from .forms import PostForm
-from .models import Post, Subscribers
+from .forms import PostForm, SubscribeForm
+from .models import Post, Subscribers, Category
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
@@ -128,13 +129,18 @@ def save():
 
 class AddSubscriber(View):
     def get(self, request, **kwargs):
-        return render(request, "mailing.html", {})
+        return render(request, "mailing.html", {"form": SubscribeForm})
 
     def post(self, request, *args, **kwargs):
-        mailing = Subscribers(
-            user=request.user,
-        )
+        form = SubscribeForm(request.POST)
+        form.is_valid()
+        # chosen_category = Category.objects.get(pk=form.cleaned_data["category"])
+
+        mailing = Subscribers(user=request.user, category=form.cleaned_data["category"])
         mailing.save()
+
+        group = Group.objects.get(name="subscribers")
+        request.user.groups.add(group)
 
         send_mail(
             subject="Вы успешно подписались на рассылку!",
@@ -142,4 +148,4 @@ class AddSubscriber(View):
             from_email="fonarevap@yandex.ru",
             recipient_list=[request.user.email],
         )
-        return redirect("profile")
+        return redirect("/profile")

@@ -149,3 +149,9 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_FORMS = {"signup": "sign.models.BasicSignupForm"}
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+ADMINS = [
+    ("twonky", "pfonareva@yandex.ru"),
+]
+SERVER_EMAIL = "pfonareva@yandex.ru"

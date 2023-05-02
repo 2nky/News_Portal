@@ -1,6 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Post
+from django.forms import ChoiceField, ModelChoiceField
+
+from .models import Post, Category
 
 
 class PostForm(forms.ModelForm):
@@ -22,3 +24,7 @@ class PostForm(forms.ModelForm):
             raise ValidationError("Текст не может совпадать с заголовком")
 
         return cleaned_data
+
+
+class SubscribeForm(forms.Form):
+    category = ModelChoiceField(queryset=Category.objects.all())
