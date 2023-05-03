@@ -1,0 +1,10 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Привет, {{ request.user.username }}! Новая статья в твоём любимом разделе!
+{% endblock title %}
+
+{% block content %}
+    <td>{{ post.title }}</td>
+    <td>{{ post.text|truncatechars:50 }}</td>
+{% endblock content %}

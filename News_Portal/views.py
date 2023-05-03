@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views import View
 
@@ -80,7 +81,21 @@ class NWCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.type = "NW"
-        return super().form_valid(form)
+        response = super().form_valid(form)
+
+        for category in post.category.all():
+            subscribers = Subscribers.objects.filter(category=category)
+
+            for person in subscribers:
+                send_mail(
+                    subject="Новая статья в твоем любимом разделе",
+                    html_message=render_to_string(
+                        "news_notification.html", context=None, request=None, using=None
+                    ),
+                    from_email="pfonareva@yandex.ru",
+                    recipient_list=[person.user.email],
+                )
+        return response
 
 
 class NWUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -107,6 +122,25 @@ class ATCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         post = form.save(commit=False)
         post.type = "AT"
         return super().form_valid(form)
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.type = "AT"
+        response = super().form_valid(form)
+
+        for category in post.category.all():
+            subscribers = Subscribers.objects.filter(category=category)
+
+            for person in subscribers:
+                send_mail(
+                    subject="Новая статья в твоем любимом разделе",
+                    html_message=render_to_string(
+                        "news_notification.html", context=None, request=None, using=None
+                    ),
+                    from_email="pfonareva@yandex.ru",
+                    recipient_list=[person.user.email],
+                )
+        return response
 
 
 class ATUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -144,8 +178,8 @@ class AddSubscriber(View):
 
         send_mail(
             subject="Вы успешно подписались на рассылку!",
-            message="Спасибо",
-            from_email="fonarevap@yandex.ru",
+            message=f'Спасибо, вы подписались на раздел {form.cleaned_data["category"]}',
+            from_email="pfonareva@yandex.ru",
             recipient_list=[request.user.email],
         )
         return redirect("/profile")
