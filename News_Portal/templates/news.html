@@ -9,6 +9,11 @@ News
 {% block content %}
    <h1>Все новости</h1>
 
+    <form action="/news/" method="get">
+        {{ form.as_p }}
+        <input type="submit" value="Показать" />
+    </form>
+
    <hr>
    {% if news %}
        <table>
@@ -16,12 +21,14 @@ News
                <td>Заголовок</td>
                <td>Дата</td>
                <td>Превью</td>
+               <td>Категория</td>
            </tr>
            {% for post in news %}
            <tr>
                <td>{{ post.title|censor }}</td>
                <td>{{ post.creation_time }}</td>
                <td>{{ post.text|truncatechars:20|censor }}</td>
+               <td>{% for category in post.category.all %} {{ category }} {% endfor %}</td>
            </tr>
            {% endfor %}
 
@@ -48,4 +55,10 @@ News
        {% endif %}
    {% endif %}
 
+    {% if request.GET.category %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Подписаться" />
+        </form>
+{% endif %}
 {% endblock content %}

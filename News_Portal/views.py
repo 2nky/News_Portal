@@ -3,6 +3,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
+
 from django.views import View
 
 from .filters import PostFilter
@@ -14,8 +15,8 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from .forms import PostForm, SubscribeForm
-from .models import Post, Subscribers, Category
+from .forms import PostForm, CategorySelectForm
+from .models import Post, Subscribers
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
@@ -34,12 +35,19 @@ class NewsList(ListView, LoginRequiredMixin):
         context["is_not_author"] = not self.request.user.groups.filter(
             name="author"
         ).exists()
+        context["form"] = CategorySelectForm()
         return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
         self.filterset = PostFilter(self.request.GET, queryset)
-        return self.filterset.qs
+        qs = self.filterset.qs
+
+        category_form = CategorySelectForm(self.request.GET)
+        if category_form.is_valid():
+            qs = qs.filter(category=category_form.cleaned_data["category"])
+
+        return qs
 
 
 class NewsDetail(DetailView):
@@ -89,10 +97,14 @@ class NWCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
             for person in subscribers:
                 send_mail(
                     subject="Новая статья в твоем любимом разделе",
+                    message="",
                     html_message=render_to_string(
-                        "news_notification.html", context=None, request=None, using=None
+                        "news_notification.html",
+                        context={"user": person.user},
+                        request=None,
+                        using=None,
                     ),
-                    from_email="pfonareva@yandex.ru",
+                    from_email="pol9.f@yandex.ru",
                     recipient_list=[person.user.email],
                 )
         return response
@@ -130,14 +142,24 @@ class ATCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
         for category in post.category.all():
             subscribers = Subscribers.objects.filter(category=category)
+            message = render_to_string(
+                "news_notification.html",
+                context=None,
+                request=None,
+                using=None,
+            )
 
             for person in subscribers:
                 send_mail(
                     subject="Новая статья в твоем любимом разделе",
+                    message="",
                     html_message=render_to_string(
-                        "news_notification.html", context=None, request=None, using=None
+                        "news_notification.html",
+                        context={"user": person.user},
+                        request=None,
+                        using=None,
                     ),
-                    from_email="pfonareva@yandex.ru",
+                    from_email="pol9.f@yandex.ru",
                     recipient_list=[person.user.email],
                 )
         return response
@@ -163,10 +185,10 @@ def save():
 
 class AddSubscriber(View):
     def get(self, request, **kwargs):
-        return render(request, "mailing.html", {"form": SubscribeForm})
+        return render(request, "mailing.html", {"form": CategorySelectForm})
 
     def post(self, request, *args, **kwargs):
-        form = SubscribeForm(request.POST)
+        form = CategorySelectForm(request.POST)
         form.is_valid()
         # chosen_category = Category.objects.get(pk=form.cleaned_data["category"])
 
@@ -179,7 +201,7 @@ class AddSubscriber(View):
         send_mail(
             subject="Вы успешно подписались на рассылку!",
             message=f'Спасибо, вы подписались на раздел {form.cleaned_data["category"]}',
-            from_email="pfonareva@yandex.ru",
+            from_email="pol9.f@yandex.ru",
             recipient_list=[request.user.email],
         )
         return redirect("/profile")

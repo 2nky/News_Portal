@@ -26,5 +26,5 @@ class PostForm(forms.ModelForm):
         return cleaned_data
 
 
-class SubscribeForm(forms.Form):
+class CategorySelectForm(forms.Form):
     category = ModelChoiceField(queryset=Category.objects.all())

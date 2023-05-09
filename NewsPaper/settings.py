@@ -149,14 +149,14 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_FORMS = {"signup": "sign.models.BasicSignupForm"}
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 EMAIL_HOST = "smtp.yandex.ru"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "pfonareva"
-EMAIL_HOST_PASSWORD = "nWX7B%s&2dLY"
+EMAIL_HOST_USER = "pol9.f"
+EMAIL_HOST_PASSWORD = "#*QXT0F5$s2$"
 EMAIL_USE_SSL = True
 ADMINS = [
-    ("twonky", "pfonareva@yandex.ru"),
+    ("twonky", "pol9.f@yandex.ru"),
 ]
-SERVER_EMAIL = "pfonareva@yandex.ru"
+SERVER_EMAIL = "pol9.f@yandex.ru"

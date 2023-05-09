@@ -15,5 +15,5 @@ urlpatterns = [
     path("create/", NWCreate.as_view(), name="news_create"),
     path("<int:pk>/edit/", NWUpdate.as_view(), name="news_update"),
     path("<int:pk>/delete/", NWDelete.as_view(), name="news_delete"),
-    path("subscribe", AddSubscriber.as_view(), name="news_search"),
+    path("subscribe", AddSubscriber.as_view(), name="subscribe"),
 ]

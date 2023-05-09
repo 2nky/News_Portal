@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Привет, {{ reuser.username }}! Новая статья в твоём любимом разделе!</title>
+</head>
+<body>
+	<h1>{{ post.title }}</h1>
+	<h2>{{ post.text|truncatechars:50 }}</h2>
+	<p>Прочитать больше по сслке: <a href="[Insert Link Here]">[Insert Link Text Here]</a></p>
+</body>
+</html>
