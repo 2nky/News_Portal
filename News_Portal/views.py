@@ -2,7 +2,7 @@ from django.contrib.auth.models import Group
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from django.views import View
 
@@ -18,6 +18,8 @@ from django.views.generic import (
 from .forms import PostForm, CategorySelectForm
 from .models import Post, Subscribers
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
+OUR_SITE_URL = "http://127.0.0.1:8000"
 
 
 class NewsList(ListView, LoginRequiredMixin):
@@ -100,7 +102,11 @@ class NWCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
                     message="",
                     html_message=render_to_string(
                         "news_notification.html",
-                        context={"user": person.user},
+                        context={
+                            "user": person.user,
+                            "post": post,
+                            "site_url": OUR_SITE_URL,
+                        },
                         request=None,
                         using=None,
                     ),
@@ -192,8 +198,10 @@ class AddSubscriber(View):
         form.is_valid()
         # chosen_category = Category.objects.get(pk=form.cleaned_data["category"])
 
-        mailing = Subscribers(user=request.user, category=form.cleaned_data["category"])
-        mailing.save()
+        mailing, created = Subscribers.objects.get_or_create(
+            user=request.user,
+            category=form.cleaned_data["category"],
+        )
 
         group = Group.objects.get(name="subscribers")
         request.user.groups.add(group)
