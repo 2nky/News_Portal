@@ -1,4 +1,8 @@
+from allauth.account.signals import user_signed_up
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.dispatch import receiver
+from django.template.loader import render_to_string
 from django.views.generic.edit import CreateView
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
@@ -13,6 +17,7 @@ class BaseRegisterView(CreateView):
     model = User
     form_class = BaseRegisterForm
     success_url = "/"
+
 
 
 @login_required
@@ -38,6 +43,22 @@ class BasicSignupForm(SignupForm):
         user = super(BasicSignupForm, self).save(request)
         common_group = Group.objects.get(name="common")
         common_group.user_set.add(user)
+
+        send_mail(
+            subject="Добро пожаловать на сайт новостей",
+            message="",
+            html_message=render_to_string(
+                "greetings.html",
+                context={
+                    "user": user.user,
+                },
+                request=None,
+                using=None,
+            ),
+            from_email="pol9.f@yandex.ru",
+            recipient_list=[user.email],
+        )
+
         return user
 
 
@@ -48,3 +69,27 @@ def upgrade_me(request):
     if not request.user.groups.filter(name="authors").exists():
         author_group.user_set.add(user)
     return redirect("/profile")
+
+
+# Ничего не понятно, но очень интересно!!
+@receiver(user_signed_up)
+def send_greetings(**kwargs):
+    request = kwargs["request"]
+    user = kwargs["user"]
+
+    send_mail(
+        subject="Добро пожаловать на сайт новостей",
+        message="",
+        html_message=render_to_string(
+            "greetings.html",
+            context={
+                "user": user,
+            },
+            request=None,
+            using=None,
+        ),
+        from_email="pol9.f@yandex.ru",
+        recipient_list=[user.email],
+    )
+
+    return user
