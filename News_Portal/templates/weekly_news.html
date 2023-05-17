@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Привет, {{ reuser.username }}! Статьи за неделю в твоём любимом разделе!</title>
+	<title>Привет, {{ user.username }}! Статьи за неделю в твоём любимом разделе!</title>
 </head>
 <body>
-	<h1>{{ post.title }} Прочитать больше по ссылке: <a href="[Insert Link Here]"></a> </h1>
+	<ul>
+	{% for post in posts %}
+	<li>{{ post.creation_time|date:"SHORT_DATETIME_FORMAT"}} - <a href="{{ site_url }}{% url 'news_detail' post.pk %}">{{ post.title }}</a></li>
+	{% endfor %}
+	</ul>
 </body>
 </html>

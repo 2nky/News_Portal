@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "News_Portal",
     "simpleapp",
     "sign",
+    "django_apscheduler",
 ]
 
 MIDDLEWARE = [
@@ -114,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru-ru"
 
 TIME_ZONE = "UTC"
 
@@ -160,3 +161,8 @@ ADMINS = [
     ("twonky", "pol9.f@yandex.ru"),
 ]
 SERVER_EMAIL = "pol9.f@yandex.ru"
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
+
+USE_L10N = True
