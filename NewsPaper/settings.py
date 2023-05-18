@@ -82,8 +82,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "NewsPaper.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
     "default": {
@@ -92,9 +90,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -112,8 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 LANGUAGE_CODE = "ru-ru"
 
@@ -151,8 +144,8 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_FORMS = {"signup": "sign.models.BasicSignupForm"}
 
-# EMAIL_HOST = "smtp.yandex.ru"
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST = "smtp.yandex.ru"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "pol9.f"
 EMAIL_HOST_PASSWORD = "#*QXT0F5$s2$"
