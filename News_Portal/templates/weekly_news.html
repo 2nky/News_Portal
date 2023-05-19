@@ -5,9 +5,13 @@
 </head>
 <body>
 	<ul>
-	{% for post in posts %}
-	<li>{{ post.creation_time|date:"SHORT_DATETIME_FORMAT"}} - <a href="{{ site_url }}{% url 'news_detail' post.pk %}">{{ post.title }}</a></li>
-	{% endfor %}
+	{% if posts %}
+		{% for post in posts %}
+		<li>{{ post.creation_time|date:"SHORT_DATETIME_FORMAT"}} - <a href="{{ site_url }}{% url 'news_detail' post.pk %}">{{ post.title }}</a></li>
+		{% endfor %}
+	{% else %}
+		<h1>А новостей-то и нет :(</h1>
+	{% endif %}
 	</ul>
 </body>
 </html>
