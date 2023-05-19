@@ -19,7 +19,7 @@ from .forms import PostForm, CategorySelectForm
 from .models import Post, Subscribers
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-OUR_SITE_URL = "http://127.0.0.1:8000"
+from .tasks import send_news_notification
 
 
 class NewsList(ListView, LoginRequiredMixin):
@@ -93,26 +93,8 @@ class NWCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         post.type = "NW"
         response = super().form_valid(form)
 
-        for category in post.category.all():
-            subscribers = Subscribers.objects.filter(category=category)
+        send_news_notification.delay(post.pk)
 
-            for person in subscribers:
-                send_mail(
-                    subject="Новая статья в твоем любимом разделе",
-                    message="",
-                    html_message=render_to_string(
-                        "news_notification.html",
-                        context={
-                            "user": person.user,
-                            "post": post,
-                            "site_url": OUR_SITE_URL,
-                        },
-                        request=None,
-                        using=None,
-                    ),
-                    from_email="pol9.f@yandex.ru",
-                    recipient_list=[person.user.email],
-                )
         return response
 
 

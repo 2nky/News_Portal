@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "simpleapp",
     "sign",
     "django_apscheduler",
+    "celery",
 ]
 
 MIDDLEWARE = [
@@ -82,7 +83,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "NewsPaper.wsgi.application"
 
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -105,7 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
 
 
 LANGUAGE_CODE = "ru-ru"
@@ -144,8 +143,8 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_FORMS = {"signup": "sign.models.BasicSignupForm"}
 
-EMAIL_HOST = "smtp.yandex.ru"
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "pol9.f"
 EMAIL_HOST_PASSWORD = "#*QXT0F5$s2$"
@@ -159,3 +158,9 @@ APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
 
 USE_L10N = True
+
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"

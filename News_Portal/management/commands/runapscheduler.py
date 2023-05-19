@@ -11,9 +11,9 @@ from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 
 from django.core.mail import send_mail
-from News_Portal.models import PostCategory, Subscribers, Post, Category
 
-OUR_SITE_URL = "http://127.0.0.1:8000"
+from News_Portal.models import PostCategory, Subscribers, Post, Category
+from News_Portal.constants import OUR_SITE_URL
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +24,9 @@ def send_weekly_updates():
     week_before = timedelta(weeks=1)
 
     for category in categories:
-        posts = Post.objects.filter(category=category, creation_time__gte=now - week_before)
+        posts = Post.objects.filter(
+            category=category, creation_time__gte=now - week_before
+        )
         subscribers = Subscribers.objects.filter(category=category)
         for person in subscribers:
             send_mail(
