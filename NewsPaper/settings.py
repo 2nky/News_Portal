@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -60,6 +59,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.cache.UpdateCacheMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.cache.FetchFromCacheMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "NewsPaper.urls"
@@ -82,14 +85,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "NewsPaper.wsgi.application"
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -106,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = "ru-ru"
 
 TIME_ZONE = "UTC"
@@ -114,7 +114,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = False
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -165,3 +164,31 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "Europe/Amsterdam"
+
+CACHES = {
+    "default": {
+        "TIMEOUT": 60,  # добавляем стандартное время ожидания в минуту (по умолчанию это 5 минут — 300 секунд)
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": os.path.join(BASE_DIR, "cache_files"),
+    }
+}
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
+
+# =============
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "debug_format": {"format": "%(asctime)s - %(levelname)s - %(message)s"}
+    },
+    "filters": {},
+    "handlers": {
+        "console_debug": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "debug_format",
+        }
+    },
+    "loggers": {"django": {"level": "DEBUG", "handlers": ["console_debug"]}},
+}

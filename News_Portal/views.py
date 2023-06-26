@@ -1,5 +1,6 @@
 from django.contrib.auth.models import Group
 from django.core.mail import send_mail
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
@@ -20,6 +21,8 @@ from .models import Post, Subscribers
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from .tasks import send_news_notification
+
+import logging
 
 
 class NewsList(ListView, LoginRequiredMixin):
@@ -195,3 +198,23 @@ class AddSubscriber(View):
             recipient_list=[request.user.email],
         )
         return redirect("/profile")
+
+
+def error_view(request):
+    django_logger = logging.getLogger("django")
+    django_logger.debug("Debug message")
+    django_logger.warning("Warning message")
+
+    request_logger = logging.getLogger("django.request")
+    request_logger.error("Oh noes")
+
+    try:
+        1 / 0
+    except Exception as exc:
+        request_logger.error("Common Error!", exc_info=True)
+        request_logger.critical("Critical Error!", exc_info=True)
+
+    security_logger = logging.getLogger("django.security")
+    security_logger.debug("Something fishy is going on...")
+
+    return HttpResponse("Hello, world!")
