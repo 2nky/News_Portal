@@ -1,0 +1,5 @@
+2023-06-28 19:24:08,302 - INFO - autoreload - Watching for file changes with StatReloader
+2023-06-28 19:24:19,809 - WARNING - views - Warning message
+2023-06-28 19:24:19,809 - ERROR - views - Oh noes
+2023-06-28 19:24:19,828 - ERROR - views - Common Error!
+2023-06-28 19:24:19,829 - CRITICAL - views - Critical Error!
