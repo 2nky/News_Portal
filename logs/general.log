@@ -1,2 +1,7 @@
 2023-06-23 19:33:11,395 - INFO - logger - Info message from general logger
 2023-06-23 19:35:10,422 - INFO - logger - Info message from general logger
+2023-06-28 19:32:49,484 - INFO - autoreload - Watching for file changes with StatReloader
+2023-06-28 19:33:08,641 - WARNING - views - Warning message
+2023-06-28 19:33:08,642 - ERROR - views - Oh noes
+2023-06-28 19:33:08,663 - ERROR - views - Common Error!
+2023-06-28 19:33:08,664 - CRITICAL - views - Critical Error!

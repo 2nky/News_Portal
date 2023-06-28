@@ -257,20 +257,20 @@ LOGGING = {
         "general_log": {
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": "general.log",
+            "filename": "logs/general.log",
             "formatter": "no_stack_trace_fmt",
             "filters": ["require_debug_false"],
         },
         "errors_log": {
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": "errors.log",
+            "filename": "logs/errors.log",
             "formatter": "module_fmt",
         },
         "security_log": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": "security.log",
+            "filename": "logs/security.log",
             "formatter": "module_fmt",
         },
         "mail_admins": {
